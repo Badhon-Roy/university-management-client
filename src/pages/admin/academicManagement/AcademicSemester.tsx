@@ -41,7 +41,7 @@ const AcademicSemester = () => {
                 },
             ],
         },
-        {
+        {   
             title: 'Year',
             key: 'year',
             dataIndex: 'year',

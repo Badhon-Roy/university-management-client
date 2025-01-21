@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { FieldValues, SubmitHandler } from "react-hook-form";
 import PHForm from "../../../components/form/PHForm";
-import { Button, Col, Flex } from 'antd';
+import { Card, Col, Flex, Row, Typography } from 'antd';
 import PHSelect from "../../../components/form/PHSelect";
 import { nameOptions } from "../../../constants/semester";
 import { monthOptions } from "../../../constants/month";
@@ -11,7 +11,8 @@ import { useAddAcademicSemesterMutation } from "../../../redux/features/admin/ac
 import { toast } from "sonner";
 import { TResponse } from "../../../types/global.type";
 import { TAcademicSemester } from "../../../types/academicSemester.type";
-
+import PHButton from "../../../components/form/Button";
+const { Title } = Typography;
 
 const currentYear = new Date().getFullYear();
 
@@ -39,7 +40,7 @@ const CreateAcademicSemester = () => {
             const res = (await addAcademicSemester(semesterData)) as TResponse<TAcademicSemester>;
             if (res.error) {
                 toast.error(res.error?.data?.message, { id: toastId })
-            } else if(res.data?.success){
+            } else if (res.data?.success) {
                 toast.success(res.data?.message, { id: toastId })
             }
         } catch (err) {
@@ -47,17 +48,29 @@ const CreateAcademicSemester = () => {
         }
     }
     return (
-        <Flex justify="center" align="center">
-            <Col span={6}>
-                <PHForm onSubmit={onSubmit} resolver={zodResolver(academicSemesterSchema)}>
-                    <PHSelect label='Name:' name='name' options={nameOptions} />
-                    <PHSelect label='Year:' name='year' options={yearOptions} />
-                    <PHSelect label='Start Month:' name='startMonth' options={monthOptions} />
-                    <PHSelect label='End Month:' name='endMonth' options={monthOptions} />
-                    <Button htmlType="submit">Submit </Button>
-                </PHForm>
+        <Row justify="center" align="middle" style={{ minHeight: "100vh", padding: "20px" }}>
+            <Col xs={24} sm={20} md={14} lg={10}>
+                <Card
+                    style={{
+                        borderRadius: "10px",
+                        padding: "20px",
+                        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                        backgroundColor: "#f9f9f9",
+                    }}
+                >
+                    <Title level={3} style={{ textAlign: "center", marginBottom: "20px", color: "#1677ff" }}>
+                        Create Academic Semester
+                    </Title>
+                    <PHForm onSubmit={onSubmit} resolver={zodResolver(academicSemesterSchema)}>
+                        <PHSelect label="Name:" name="name" options={nameOptions} />
+                        <PHSelect label="Year:" name="year" options={yearOptions} />
+                        <PHSelect label="Start Month:" name="startMonth" options={monthOptions} />
+                        <PHSelect label="End Month:" name="endMonth" options={monthOptions} />
+                        <PHButton text="Submit" />
+                    </PHForm>
+                </Card>
             </Col>
-        </Flex>
+        </Row>
     );
 };
 

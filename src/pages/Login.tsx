@@ -9,7 +9,7 @@ import PHForm from '../components/form/PHForm';
 import PHInput from '../components/form/PHInput';
 import { useAppDispatch } from '../redux/hook';
 import verifyToken from '../utils/verifyToken';
-import { TUser } from '../types';
+import { TUserData } from '../types';
 
 const Login = () => {
     const navigate = useNavigate();
@@ -37,7 +37,7 @@ const Login = () => {
                 password: data.password,
             };
             const res = await login(userInfo).unwrap();
-            const user = verifyToken(res.data.accessToken) as TUser;
+            const user = verifyToken(res.data.accessToken) as TUserData;
             dispatch(setUser({ user: user, token: res.data.accessToken }));
             toast.success('Logged in', { id: toastId, duration: 2000 });
             navigate(`/${user.role}/dashboard`);
