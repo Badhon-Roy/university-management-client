@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, Row } from 'antd';
 import { FieldValues } from 'react-hook-form';
 import { useLoginMutation } from '../redux/features/auth/authApi';
@@ -21,14 +22,13 @@ const Login = () => {
     // });
 
     const defaultValues = {
-        userId: 'A-0001',
-        password: 'admin123',
+        userId: '0001',
+        password: 'admin12345',
     };
 
     const [login] = useLoginMutation();
 
     const onSubmit = async (data: FieldValues) => {
-        console.log(data);
         const toastId = toast.loading('Logging in');
 
         try {
@@ -42,7 +42,6 @@ const Login = () => {
             toast.success('Logged in', { id: toastId, duration: 2000 });
             navigate(`/${user.role}/dashboard`);
         } catch (err) {
-            console.log(err);
             toast.error('Something went wrong', { id: toastId, duration: 2000 });
         }
     };
