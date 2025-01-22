@@ -18,8 +18,8 @@ export type TUserPath = {
 export type TAdminSidebarItem = {
     key : string;
     label : ReactNode;
-    children? : TAdminSidebarItem[];
-}
+    children? : TAdminSidebarItem[] ;
+} | undefined;
 
 export type TAuthState = {
     user : null | TUser;

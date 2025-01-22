@@ -1,4 +1,4 @@
-import { TQueryParam, TResponseRedux, TStudent } from "../../../types";
+import { TFaculty, TQueryParam, TResponseRedux, TStudent } from "../../../types";
 import { baseApi } from "../../api/baseApi";
 
 const userManagementApi = baseApi.injectEndpoints({
@@ -13,7 +13,6 @@ const userManagementApi = baseApi.injectEndpoints({
                         params.append(item.name, item.value as string)
                     })
                 }
-
                 return {
                     url: '/students',
                     method: "GET",
@@ -27,6 +26,13 @@ const userManagementApi = baseApi.injectEndpoints({
                 }
             }
         }),
+        getSingleStudent: builder.query({
+            query: (id) => ({
+                url: `/students/${id}`,
+                method: "GET"
+            })
+        })
+        ,
         addStudent: builder.mutation({
             query: (data) => ({
                 url: '/users/create-student',
@@ -34,10 +40,44 @@ const userManagementApi = baseApi.injectEndpoints({
                 body: data
             })
         }),
+        updateStudentStatus : builder.mutation({
+            query: ({ id, data }) => ({
+                url: `/users/change-status/${id}`,
+                method: 'POST',
+                body: data,
+            }),
+        }),
+
+        // faculty related
+        getAllFaculties: builder.query({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args) {
+                    args.forEach((item: TQueryParam) => {
+                        params.append(item.name, item.value as string)
+                    })
+                }
+                return {
+                    url: '/faculties',
+                    method: "GET",
+                    params: params
+                }
+            },
+            transformResponse: (response: TResponseRedux<TFaculty[]>) => {
+                return {
+                    data: response?.data,
+                    meta: response?.meta
+                }
+            }
+        }),
+
     })
 })
 
 export const {
-    useGetAllStudentQuery
-    , useAddStudentMutation }
+    useGetAllStudentQuery,
+    useGetSingleStudentQuery
+    , useAddStudentMutation,
+useUpdateStudentStatusMutation,
+useGetAllFacultiesQuery }
     = userManagementApi;
